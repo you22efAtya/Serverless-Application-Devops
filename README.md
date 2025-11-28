@@ -19,7 +19,7 @@ The backend is implemented using AWS Lambda functions, DynamoDB stores applicant
 ---
 
 ## DynamoDB Table
-**Table name:** `devops90_raffle`  
+**Table name:** `devops_raffle`  
 **Partition key:** `email` (string)
 
 **Item structure (example):**
@@ -31,6 +31,16 @@ The backend is implemented using AWS Lambda functions, DynamoDB stores applicant
   "won": "no"
 }
 ```
+
+## AWS Services (icons)
+<div style="display:flex; flex-wrap:wrap; gap:16px; align-items:center;">
+  <div style="text-align:center;">
+    <img src="./assets/image.png" alt="API Gateway" width="1050px"/>
+  </div>
+</div>
+
+---
+
 
 
 ## API Endpoints (example)
@@ -56,20 +66,17 @@ The backend is implemented using AWS Lambda functions, DynamoDB stores applicant
 - Randomly selects 3 unique winners  
 - Updates the `won` attribute to `"yes"` for each winner  
 - Returns the winners
-
-> Implementation note: For large tables consider sampling or using a less-costly approach than `Scan` (e.g., maintain a separate list of applicant keys, or use paginated processing).
-
 ---
 
 ## Frontend
-- Simple static HTML pages (e.g., `index.html`, `winners.html`) that call the API endpoints
+- Simple static HTML pages (e.g., `apply.html`, `draw.html`) that call the API endpoints
 - Host the static files in an S3 bucket configured for website hosting
 - Use CloudFront for CDN + TLS
 
 ---
 
 ## Deployment Steps (high level)
-1. Create DynamoDB table `devops90_raffle`
+1. Create DynamoDB table `devops_raffle`
 2. Create Lambda functions (`apply`, `count`, `draw`) and grant DynamoDB permissions
 3. Create REST API in API Gateway and integrate endpoints with Lambda
 4. Configure ACM certificate for your domain (if using a custom domain)
@@ -99,23 +106,10 @@ The backend is implemented using AWS Lambda functions, DynamoDB stores applicant
 - Use least-privilege IAM roles for Lambda functions
 - Enable encryption at rest for DynamoDB (defaults to AWS-managed keys)
 - Validate and sanitize user input to prevent injection issues
-- Consider rate-limiting or CAPTCHA to avoid spam entries
-- Use a replay or duplicate check on `email` to avoid duplicate entries
 
 ---
 
 ## Monitoring
 - Stream Lambda logs to CloudWatch
 - Set CloudWatch alarms for errors or throttles
-- Optionally enable X-Ray for tracing
-
----
-
-## License
-This project is open-source. Add your preferred license file (e.g., `LICENSE`).
-
----
-
-## Contact
-If you want help improving this README or preparing deployment scripts (CloudFormation/SAM/Terraform), open an issue or reach out.
 
