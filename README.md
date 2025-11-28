@@ -32,48 +32,6 @@ The backend is implemented using AWS Lambda functions, DynamoDB stores applicant
 }
 ```
 
----
-
-## Architecture (visual)
-<!-- Replace the src values with your repository paths or remote URLs -->
-<div align="center">
-  <img src="./assets/architecture.png" alt="Architecture diagram" width="800"/>
-</div>
-
----
-
-## AWS Services (icons)
-<div style="display:flex; flex-wrap:wrap; gap:16px; align-items:center;">
-  <div style="text-align:center;">
-    <img src="./assets/apigateway.png" alt="API Gateway" width="120"/><br/>API Gateway
-  </div>
-  <div style="text-align:center;">
-    <img src="./assets/lambda.png" alt="Lambda" width="120"/><br/>Lambda
-  </div>
-  <div style="text-align:center;">
-    <img src="./assets/dynamodb.png" alt="DynamoDB" width="120"/><br/>DynamoDB
-  </div>
-  <div style="text-align:center;">
-    <img src="./assets/s3.png" alt="S3" width="120"/><br/>S3
-  </div>
-  <div style="text-align:center;">
-    <img src="./assets/cloudfront.png" alt="CloudFront" width="120"/><br/>CloudFront
-  </div>
-  <div style="text-align:center;">
-    <img src="./assets/route53.png" alt="Route 53" width="120"/><br/>Route 53
-  </div>
-  <div style="text-align:center;">
-    <img src="./assets/acm.png" alt="ACM" width="120"/><br/>ACM
-  </div>
-  <div style="text-align:center;">
-    <img src="./assets/iam.png" alt="IAM" width="120"/><br/>IAM
-  </div>
-  <div style="text-align:center;">
-    <img src="./assets/cloudwatch.png" alt="CloudWatch" width="120"/><br/>CloudWatch
-  </div>
-</div>
-
----
 
 ## API Endpoints (example)
 > These are example endpoints. Replace with your deployed API Gateway URLs.
