@@ -1,24 +1,69 @@
-import { DynamoDBClient, ScanCommand } from "@aws-sdk/client-dynamodb";
+import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
+import { DynamoDBDocumentClient, ScanCommand, UpdateCommand } from "@aws-sdk/lib-dynamodb";
 
-const client = new DynamoDBClient({});
+const dynamo = new DynamoDBClient({});
+const client = DynamoDBDocumentClient.from(dynamo);
 
-export const handler = async (event, context) => {
+export const handler = async (event) => {
     console.log("---devops90---start-handler");
     console.log("---devops90---event", event);
     let TableName = "devops90_raffle";
-    try {
+    let winners_count = 3;
+    try 
+    {
+        console.log("---devops90---try");
+        
         const command = new ScanCommand({
-            TableName: TableName,
-            Select: "COUNT"
+          FilterExpression: "won = :w",
+          ExpressionAttributeValues: {
+            ":w": "no"
+          },
+          TableName: TableName
         });
         
-        const response = await client.send(command);
+        const data = await client.send(command);
 
-        console.log("---devops90---count", response);
-        return response.Count;
-    } catch (e) {
-        console.log("---devops90---e", e);
-        return e.message;
+        console.log("---devops90---items-count", data.Items.length);
+
+        if(data.Items.length < winners_count){
+          return "There is no enough data! " + data.Items.length + " only";
+        }
+        
+        let indecis = [];
+        let winners = [];
+        for(let i =0; i < winners_count; i++){
+            let newIndex = Math.floor(Math.random() * data.Items.length);
+            if (indecis[0] == newIndex || indecis[1] == newIndex || indecis[2] == newIndex)
+            {
+                i--;
+                continue;
+            }
+            indecis[i] = newIndex ;
+            winners.push(data.Items[newIndex]);
+        }
+        
+        for(let i = 0; i < winners.length; i++){
+
+            const update_command = new UpdateCommand({
+              TableName: TableName,
+              Key: {
+                email: winners[i].email
+              },
+              UpdateExpression: 'set won = :r',
+              ExpressionAttributeValues: {
+                ':r': 'yes',
+              }
+            });
+            const response = await client.send(update_command);
+            console.log(response);
+        }
+        
+        return {
+            "winners": winners
+        };
+        
+    } catch (err) {
+        console.log(err);
+        return err.message;
     }
 };
-
